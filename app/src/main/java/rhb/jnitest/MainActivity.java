@@ -1,11 +1,7 @@
 package rhb.jnitest;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
-import android.widget.TextView;
-
-import rhb.jnitest.iotest.IOUtils;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -13,15 +9,16 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView tv = (TextView) findViewById(R.id.sample_text);
-        tv.setText(getStringFromJNI());
-        IOUtils ioUtils = new IOUtils();
-        ioUtils.writeFile("" + Environment.getExternalStorageDirectory(), new byte[2]);
+        BaseType baseType = new BaseType();
+        baseType.writeInt(10);
+        baseType.writeByte((byte) 5);
+        baseType.writeString("This String comes from java");
+        String msg = baseType.getString();
+        LogUtils.log(getClass(), "msg:" + msg);
+        byte[] bys = {1, 2, 3};
+        byte[] bytes = baseType.writeByteArray(bys);
+        for (int i = 0; i < bytes.length; i++) {
+            LogUtils.log(getClass(), "bytes[" + i + "]=" + bytes[i]);
+        }
     }
-
-    static {
-        System.loadLibrary("sample");
-    }
-
-    public native String getStringFromJNI();
 }
