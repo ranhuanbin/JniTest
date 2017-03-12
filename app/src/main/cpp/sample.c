@@ -3,7 +3,6 @@
 #include "FilePerform.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <FilePerform.h>
 
 #define FALSE JNI_FALSE
 
@@ -52,12 +51,21 @@ Java_rhb_jnitest_BaseType_writeByteArray(JNIEnv *env, jobject instance, jbyteArr
     return bytes;
 }
 
-JNIEXPORT void JNICALL
+JNIEXPORT int JNICALL
 Java_rhb_jnitest_iotest_IOUtils_WriteFile(JNIEnv *env, jobject instance, jstring path_,
                                           jstring msg_) {
     const char *path = (*env)->GetStringUTFChars(env, path_, 0);
     const char *msg = (*env)->GetStringUTFChars(env, msg_, 0);
-    writeFile(path, msg);
+    int result = writeFile(path, msg);
     (*env)->ReleaseStringUTFChars(env, path_, path);
     (*env)->ReleaseStringUTFChars(env, msg_, msg);
+    return result;
+}
+
+JNIEXPORT jstring JNICALL
+Java_rhb_jnitest_iotest_IOUtils_ReadFile(JNIEnv *env, jobject instance, jstring path_) {
+    const char *path = (*env)->GetStringUTFChars(env, path_, 0);
+    char *ch = readFile(path);
+    (*env)->ReleaseStringUTFChars(env, path_, path);
+    return (*env)->NewStringUTF(env, ch);
 }

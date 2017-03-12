@@ -7,4 +7,6 @@
 
 #endif //JNITEST_FILEPERFORM_H
 
-void writeFile(const char *path, const char *msg);
+int writeFile(const char *path, const char *msg);
+
+char *readFile(const char *path);

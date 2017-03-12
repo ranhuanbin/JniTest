@@ -5,9 +5,16 @@ public class IOUtils {
         System.loadLibrary("sample");
     }
 
-    public native void WriteFile(String path, String msg);
+    public boolean writeFile(String path, String msg) {
+        int result = WriteFile(path, msg);
+        return result == 1;
+    }
 
-//    public void writeFile(String path, byte[] bytes) {
-//        WriteFile(path, bytes);
-//    }
+    public String readFile(String path) {
+        return ReadFile(path);
+    }
+
+    public native int WriteFile(String path, String msg);
+
+    public native String ReadFile(String path);
 }
